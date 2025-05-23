@@ -37,11 +37,4 @@ L’objectif est de proposer une expérience immersive permettant la navigation 
 
 ---
 
-## Déploiement
-
-Ce projet peut être publié facilement sur **GitHub Pages**.  
-Il suffit de pousser ce dépôt sur GitHub et d’activer GitHub Pages dans les paramètres (branche `main`, dossier racine).
-
----
-
 Contributions, suggestions et retours sont bienvenus pour faire avancer ce projet.
