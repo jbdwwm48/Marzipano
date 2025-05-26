@@ -53,6 +53,23 @@
         #sceneList {
             display: none;
         }
+
+        .btn-close-iframe {
+            position: fixed;
+            top: 12px;
+            right: 12px;
+            z-index: 9999;
+            background: rgba(107, 84, 166, 0.95);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            color: white;
+            font-size: 20px;
+            line-height: 1;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+        }
     </style>
 
     <link rel="stylesheet" href="vendor/reset.min.css" />
@@ -109,6 +126,35 @@
     <a href="javascript:void(0)" id="viewOut" class="viewControlButton viewControlButton-6" title="Zoom arrière">
         <img class="icon" src="img/minus.png" />
     </a>
+    <button id="btnExitFullscreen" class="btn-exit-fullscreen">✕ Fermer le plein écran</button>
+
+
+    <script>
+        const btnExitFullscreen = document.getElementById('btnExitFullscreen');
+
+        btnExitFullscreen.addEventListener('click', () => {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) { /* Safari */
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) { /* IE11 */
+                document.msExitFullscreen();
+            }
+        });
+        function onFullscreenChange() {
+            if (document.fullscreenElement) {
+                btnExitFullscreen.style.display = 'inline-block';
+            } else {
+                btnExitFullscreen.style.display = 'none';
+            }
+        }
+
+        document.addEventListener('fullscreenchange', onFullscreenChange);
+        onFullscreenChange(); // état initial
+
+
+    </script>
+
     <script>document.getElementById('sceneListToggle').style.display = 'none';
     </script>
     <script src="vendor/screenfull.min.js"></script>
