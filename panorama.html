@@ -23,10 +23,6 @@
             background: #000;
         }
 
-        /* Suppression du header */
-
-
-        /* ... */
         a {
             display: inline-block;
             cursor: pointer;
@@ -54,7 +50,7 @@
             display: none;
         }
 
-        .btn-close-iframe {
+        .btn-exit-fullscreen {
             position: fixed;
             top: 12px;
             right: 12px;
@@ -69,6 +65,20 @@
             line-height: 1;
             cursor: pointer;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+
+            /* Animation d'apparition */
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .btn-exit-fullscreen.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .btn-exit-fullscreen:hover {
+            background: rgba(86, 61, 130, 0.95);
         }
     </style>
 
@@ -82,12 +92,12 @@
 
     <div id="sceneList">
         <ul class="scenes">
-            <a href="javascript:void(0)" class="scene" data-id="0-cour1">
-                <li class="text">cour1</li>
-            </a>
-            <a href="javascript:void(0)" class="scene" data-id="1-cour2">
-                <li class="text">cour2</li>
-            </a>
+            <li class="text">
+                <a href="javascript:void(0)" class="scene" data-id="0-cour1">cour1</a>
+            </li>
+            <li class="text">
+                <a href="javascript:void(0)" class="scene" data-id="1-cour2">cour2</a>
+            </li>
         </ul>
     </div>
 
@@ -126,8 +136,8 @@
     <a href="javascript:void(0)" id="viewOut" class="viewControlButton viewControlButton-6" title="Zoom arrière">
         <img class="icon" src="img/minus.png" />
     </a>
-    <button id="btnExitFullscreen" class="btn-exit-fullscreen">✕ Fermer le plein écran</button>
 
+    <button id="btnExitFullscreen" class="btn-exit-fullscreen" aria-label="Quitter le mode plein écran">✕</button>
 
     <script>
         const btnExitFullscreen = document.getElementById('btnExitFullscreen');
@@ -141,18 +151,14 @@
                 document.msExitFullscreen();
             }
         });
+
         function onFullscreenChange() {
-            if (document.fullscreenElement) {
-                btnExitFullscreen.style.display = 'inline-block';
-            } else {
-                btnExitFullscreen.style.display = 'none';
-            }
+            const isFullscreen = document.fullscreenElement !== null;
+            btnExitFullscreen.classList.toggle('show', isFullscreen);
         }
 
         document.addEventListener('fullscreenchange', onFullscreenChange);
         onFullscreenChange(); // état initial
-
-
     </script>
 
     <script>document.getElementById('sceneListToggle').style.display = 'none';

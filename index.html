@@ -85,6 +85,23 @@
       align-items: center;
       justify-content: center;
     }
+
+    .resize-btn {
+      margin-top: 10px;
+      background-color: #6b54a6;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(107, 84, 166, 0.7);
+      transition: background-color 0.3s ease;
+    }
+
+    .resize-btn:hover {
+      background-color: #594093;
+    }
   </style>
 </head>
 
@@ -97,20 +114,42 @@
     <button id="btnZoomIn" class="resize-btn" aria-label="Zoomer">Zoomer / Voir en grand</button>
   </section>
 
+  <button id="closeFullscreen">Quitter le plein écran</button>
+
   <script>
     const iframe = document.getElementById('iframePanorama');
     const btnZoomIn = document.getElementById('btnZoomIn');
+    const closeBtn = document.getElementById('closeFullscreen');
 
     btnZoomIn.addEventListener('click', () => {
       if (iframe.requestFullscreen) {
         iframe.requestFullscreen();
-      } else if (iframe.webkitRequestFullscreen) { /* Safari */
+      } else if (iframe.webkitRequestFullscreen) {
         iframe.webkitRequestFullscreen();
-      } else if (iframe.msRequestFullscreen) { /* IE11 */
+      } else if (iframe.msRequestFullscreen) {
         iframe.msRequestFullscreen();
       }
     });
 
+    closeBtn.addEventListener('click', () => {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+      }
+    });
+
+    // Affichage du bouton seulement en fullscreen
+    document.addEventListener('fullscreenchange', () => {
+      const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
+      if (fullscreenElement === iframe) {
+        closeBtn.classList.add('visible');
+      } else {
+        closeBtn.classList.remove('visible');
+      }
+    });
   </script>
 
 </body>
