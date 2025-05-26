@@ -85,30 +85,31 @@
 
     /* Iframe panorama */
     #iframePanorama {
+      width: 100%;
+      max-width: 900px;
+      aspect-ratio: 3 / 2;
       border: 3px solid #6b54a6;
-      border-radius: 10px;
-      width: 600px;
-      height: 400px;
-      transition: width 0.3s ease, height 0.3s ease;
+      border-radius: 8px;
       background: black;
+      transition: all 0.3s ease;
     }
+
 
     /* Mode fullscreen centré */
     #iframePanorama.fullscreen {
       position: fixed !important;
       top: 50% !important;
       left: 50% !important;
-      width: 110vw !important;
+      width: 95vw !important;
       max-width: 1400px !important;
-      height: 85vh !important;
-      max-height: 1000px !important;
-      border-radius: 10px !important;
-      box-shadow: 0 0 30px rgba(107, 84, 166, 0.8) !important;
-      z-index: 9999 !important;
-      background: black;
-      margin: 0 !important;
+      height: auto !important;
+      aspect-ratio: 16 / 9;
+      max-height: 90vh !important;
       transform: translate(-50%, -50%) !important;
-      transition: width 0.3s ease, height 0.3s ease;
+      z-index: 9999 !important;
+      border-radius: 10px !important;
+      background: black;
+      box-shadow: 0 0 30px rgba(107, 84, 166, 0.8);
     }
   </style>
 </head>
@@ -117,7 +118,7 @@
 
   <h2>Panorama 360° intégré en iframe</h2>
 
-  <section id="panoramaSection">
+  <section id="panoramaSection" role="region" aria-label="Panorama Interactif">
 
     <div id="zoomControls">
       <button id="btnZoomIn" class="resize-btn" aria-label="Zoomer">
