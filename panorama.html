@@ -49,37 +49,6 @@
         #sceneList {
             display: none;
         }
-
-        .btn-exit-fullscreen {
-            position: fixed;
-            top: 12px;
-            right: 12px;
-            z-index: 9999;
-            background: rgba(107, 84, 166, 0.95);
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            color: white;
-            font-size: 20px;
-            line-height: 1;
-            cursor: pointer;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-
-            /* Animation d'apparition */
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-
-        .btn-exit-fullscreen.show {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .btn-exit-fullscreen:hover {
-            background: rgba(86, 61, 130, 0.95);
-        }
     </style>
 
     <link rel="stylesheet" href="vendor/reset.min.css" />
@@ -140,6 +109,18 @@
     <button id="btnExitFullscreen" class="btn-exit-fullscreen" aria-label="Quitter le mode plein écran">✕</button>
 
     <script>
+        // On cache la liste des scènes par défaut
+        document.getElementById('sceneListToggle').style.display = 'none';
+    </script>
+
+    <script src="vendor/screenfull.min.js"></script>
+    <script src="vendor/bowser.min.js"></script>
+    <script src="vendor/marzipano.js"></script>
+
+    <script src="data.js"></script>
+    <script src="index.js"></script>
+
+    <script>
         const btnExitFullscreen = document.getElementById('btnExitFullscreen');
 
         btnExitFullscreen.addEventListener('click', () => {
@@ -153,22 +134,19 @@
         });
 
         function onFullscreenChange() {
-            const isFullscreen = document.fullscreenElement !== null;
+            // Vérifie si on est en plein écran
+            const isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement);
+            // Affiche ou masque le bouton quitter plein écran
             btnExitFullscreen.classList.toggle('show', isFullscreen);
         }
 
         document.addEventListener('fullscreenchange', onFullscreenChange);
-        onFullscreenChange(); // état initial
-    </script>
+        document.addEventListener('webkitfullscreenchange', onFullscreenChange);
+        document.addEventListener('msfullscreenchange', onFullscreenChange);
 
-    <script>document.getElementById('sceneListToggle').style.display = 'none';
+        // Initialisation de l'état au chargement
+        onFullscreenChange();
     </script>
-    <script src="vendor/screenfull.min.js"></script>
-    <script src="vendor/bowser.min.js"></script>
-    <script src="vendor/marzipano.js"></script>
-
-    <script src="data.js"></script>
-    <script src="index.js"></script>
 
 </body>
 

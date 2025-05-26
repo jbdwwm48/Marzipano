@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Test Fullscreen Firefox</title>
+    <style>
+        #btnExitFullscreen {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 9999;
+            padding: 10px;
+            background: red;
+            color: white;
+            display: none;
+        }
+
+        #btnExitFullscreen.show {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <button id="goFullscreen">Go fullscreen</button>
+    <button id="btnExitFullscreen">✕ Fermer</button>
+
+    <script>
+        const goFullscreen = document.getElementById('goFullscreen');
+        const btnExitFullscreen = document.getElementById('btnExitFullscreen');
+
+        goFullscreen.addEventListener('click', () => {
+            document.documentElement.requestFullscreen();
+        });
+
+        btnExitFullscreen.addEventListener('click', () => {
+            document.exitFullscreen();
+        });
+
+        document.addEventListener('fullscreenchange', () => {
+            const isFullscreen = document.fullscreenElement !== null;
+            console.log('fullscreenchange:', isFullscreen);
+            btnExitFullscreen.classList.toggle('show', isFullscreen);
+        });
+    </script>
+
+</body>
+
+</html>

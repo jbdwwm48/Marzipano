@@ -35,68 +35,88 @@
       width: 100%;
       max-width: 1300px;
       position: relative;
-    }
-
-    #iframePanorama {
       border: 3px solid #6b54a6;
       border-radius: 10px;
-      width: 100%;
-      max-width: 800px;
-      aspect-ratio: 3 / 2;
-      transition: all 0.4s ease;
       background: black;
     }
 
-    #iframePanorama.fullscreen {
+    #iframePanorama {
+      border: none;
+      width: 100%;
+      aspect-ratio: 3 / 2;
+      border-radius: 10px;
+      transition: all 0.4s ease;
+      display: block;
+    }
+
+    /* Fullscreen styles for the container */
+    #panoramaSection:fullscreen {
       position: fixed;
       top: 50%;
       left: 50%;
       width: 90vw;
-      max-width: 1200px;
       height: 85vh;
+      max-width: 1200px;
       max-height: 1000px;
+      transform: translate(-50%, -50%);
+      z-index: 9999;
       border-radius: 10px;
       box-shadow: 0 0 30px rgba(107, 84, 166, 0.8);
-      z-index: 9999;
       background: black;
-      margin: 0 auto;
-      transform: translate(-50%, -50%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Fullscreen iframe fills container */
+    #panoramaSection:fullscreen #iframePanorama {
+      width: 100%;
+      height: 100%;
+      border-radius: 10px;
     }
 
     #closeFullscreen {
       position: fixed;
-      top: 20px;
-      right: 20px;
+      margin: 12px 0 10px;
+      top: 0px;
+      right: 15px;
       z-index: 10000;
-      background-color: #6b54a6;
+      background-color: #dc3545;
       color: white;
       border: none;
-      border-radius: 6px;
-      padding: 8px 14px;
-      font-size: 18px;
+      padding: 10px 14px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 8px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
       cursor: pointer;
-      box-shadow: 0 2px 6px rgba(107, 84, 166, 0.7);
-      user-select: none;
-      display: none;
+    }
+
+    #closeFullscreen:hover {
+      background-color: #4b0e15;
     }
 
     #closeFullscreen.visible {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+      opacity: 1;
+      pointer-events: auto;
     }
 
     .resize-btn {
-      margin-top: 10px;
+      margin: 10px 0 10px;
       background-color: #6b54a6;
       color: white;
       border: none;
-      padding: 10px 16px;
+      top: 20px;
+      padding: 10px 14px;
+      font-weight: bold;
       font-size: 16px;
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
       box-shadow: 0 2px 6px rgba(107, 84, 166, 0.7);
       transition: background-color 0.3s ease;
+      user-select: none;
     }
 
     .resize-btn:hover {
@@ -110,24 +130,23 @@
   <h2>Panorama 360° intégré</h2>
 
   <section id="panoramaSection">
-    <iframe id="iframePanorama" src="panorama.html" allowfullscreen frameborder="0"></iframe>
     <button id="btnZoomIn" class="resize-btn" aria-label="Zoomer">Zoomer / Voir en grand</button>
+    <button id="closeFullscreen" aria-label="Quitter le plein écran">✕</button>
+    <iframe id="iframePanorama" src="panorama.html" allowfullscreen frameborder="0"></iframe>
   </section>
 
-  <button id="closeFullscreen">Quitter le plein écran</button>
-
   <script>
-    const iframe = document.getElementById('iframePanorama');
+    const panoramaSection = document.getElementById('panoramaSection');
     const btnZoomIn = document.getElementById('btnZoomIn');
     const closeBtn = document.getElementById('closeFullscreen');
 
     btnZoomIn.addEventListener('click', () => {
-      if (iframe.requestFullscreen) {
-        iframe.requestFullscreen();
-      } else if (iframe.webkitRequestFullscreen) {
-        iframe.webkitRequestFullscreen();
-      } else if (iframe.msRequestFullscreen) {
-        iframe.msRequestFullscreen();
+      if (panoramaSection.requestFullscreen) {
+        panoramaSection.requestFullscreen();
+      } else if (panoramaSection.webkitRequestFullscreen) {
+        panoramaSection.webkitRequestFullscreen();
+      } else if (panoramaSection.msRequestFullscreen) {
+        panoramaSection.msRequestFullscreen();
       }
     });
 
@@ -141,15 +160,21 @@
       }
     });
 
-    // Affichage du bouton seulement en fullscreen
-    document.addEventListener('fullscreenchange', () => {
-      const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
-      if (fullscreenElement === iframe) {
+    function updateCloseButton() {
+      const fullscreenEl = document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
+
+      if (fullscreenEl === panoramaSection) {
         closeBtn.classList.add('visible');
       } else {
         closeBtn.classList.remove('visible');
       }
-    });
+    }
+
+    document.addEventListener('fullscreenchange', updateCloseButton);
+    document.addEventListener('webkitfullscreenchange', updateCloseButton);
+    document.addEventListener('msfullscreenchange', updateCloseButton);
+
+    updateCloseButton(); // état initial
   </script>
 
 </body>
