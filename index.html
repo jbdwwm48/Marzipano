@@ -17,7 +17,6 @@
       align-items: center;
       min-height: 100vh;
       padding: 20px;
-      position: relative;
     }
 
     h2 {
@@ -34,10 +33,10 @@
       align-items: center;
       width: 100%;
       max-width: 1300px;
-      position: relative;
       border: 3px solid #6b54a6;
       border-radius: 10px;
       background: black;
+      position: relative;
     }
 
     #iframePanorama {
@@ -45,11 +44,9 @@
       width: 100%;
       aspect-ratio: 3 / 2;
       border-radius: 10px;
-      transition: all 0.4s ease;
       display: block;
     }
 
-    /* Fullscreen styles for the container */
     #panoramaSection:fullscreen {
       position: fixed;
       top: 50%;
@@ -68,48 +65,81 @@
       align-items: center;
     }
 
-    /* Fullscreen iframe fills container */
     #panoramaSection:fullscreen #iframePanorama {
       width: 100%;
       height: 100%;
-      border-radius: 10px;
     }
 
     #closeFullscreen {
       position: fixed;
-      margin: 12px 0 10px;
-      top: 0px;
-      right: 15px;
+      bottom: 50px;
+      left: 50%;
+      transform: translateX(-50%);
       z-index: 10000;
       background-color: #dc3545;
       color: white;
       border: none;
-      padding: 10px 14px;
-      font-size: 16px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      font-size: 24px;
       font-weight: bold;
-      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.3s ease;
       cursor: pointer;
     }
 
-    #closeFullscreen:hover {
-      background-color: #4b0e15;
-    }
 
     #closeFullscreen.visible {
-      opacity: 1;
+      opacity: 0.3;
       pointer-events: auto;
     }
 
+    #closeFullscreen:hover {
+      opacity: 1;
+      background-color: #dc3545;
+    }
+
+    #closeFullscreen.visible::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      box-shadow: 0 0 12px rgba(220, 53, 69, 0.7);
+      animation: pulse 1.2s infinite ease-in-out;
+      z-index: -1;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        opacity: 0.8;
+      }
+
+      70% {
+        transform: scale(1.4);
+        opacity: 0;
+      }
+
+      100% {
+        transform: scale(1.4);
+        opacity: 0;
+      }
+    }
+
     .resize-btn {
-      margin: 10px 0 10px;
+      margin: 20px 0 0;
       background-color: #6b54a6;
       color: white;
       border: none;
-      top: 20px;
-      padding: 10px 14px;
+      padding: 10px 20px;
       font-weight: bold;
       font-size: 16px;
       border-radius: 8px;
@@ -130,10 +160,11 @@
   <h2>Panorama 360° intégré</h2>
 
   <section id="panoramaSection">
-    <button id="btnZoomIn" class="resize-btn" aria-label="Zoomer">Zoomer / Voir en grand</button>
     <button id="closeFullscreen" aria-label="Quitter le plein écran">✕</button>
     <iframe id="iframePanorama" src="panorama.html" allowfullscreen frameborder="0"></iframe>
   </section>
+
+  <button id="btnZoomIn" class="resize-btn" aria-label="Zoomer">Zoomer / Voir en grand</button>
 
   <script>
     const panoramaSection = document.getElementById('panoramaSection');
@@ -162,19 +193,13 @@
 
     function updateCloseButton() {
       const fullscreenEl = document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
-
-      if (fullscreenEl === panoramaSection) {
-        closeBtn.classList.add('visible');
-      } else {
-        closeBtn.classList.remove('visible');
-      }
+      closeBtn.classList.toggle('visible', fullscreenEl === panoramaSection);
     }
 
     document.addEventListener('fullscreenchange', updateCloseButton);
     document.addEventListener('webkitfullscreenchange', updateCloseButton);
     document.addEventListener('msfullscreenchange', updateCloseButton);
-
-    updateCloseButton(); // état initial
+    updateCloseButton();
   </script>
 
 </body>
