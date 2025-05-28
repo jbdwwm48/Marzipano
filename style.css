@@ -808,6 +808,11 @@ body.view-control-buttons .viewControlButton {
   body.view-control-buttons .viewControlButton {
     display: none;
   }
+
+  .hotspot {
+    transform: scale(0.6);
+    transform-origin: center center;
+  }
 }
 
 .viewControlButton .icon {

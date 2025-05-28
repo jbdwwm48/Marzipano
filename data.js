@@ -36,8 +36,14 @@ var APP_DATA = {
           "target": "1-cour2"
         }
       ],
-      "infoHotspots": []
-    },
+      "infoHotspots": [{
+        "yaw": -0.6,
+        "pitch": 0.1,
+        "title": "Rentrée des classes", // sert à l’identification
+        "text": "Promo de la rentrée !"
+      }
+      ]
+    }, // ✅ FIN DE cour1
     {
       "id": "1-cour2",
       "name": "cour2",
